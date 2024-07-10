@@ -77,6 +77,12 @@ module.exports = {
                     'vue-loader'
                 ]
             },
+            // 专门处理html文件的img图片，（负责引入img，从而能被url-loader处理）
+            // 问题：为啥非要在vue-loader下面，。先执行html-loader
+            {
+                test: /\.html$/,
+                loader: 'html-loader'
+            },
             {
                 test: /\.js$/,
                 exclude: /node_modules/, // 排除
