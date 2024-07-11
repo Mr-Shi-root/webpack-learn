@@ -35,7 +35,7 @@ module.exports = {
 
             // style 需要安装 style-loader 插件
 
-            // 还是没有弄清dependency的作用
+            // 还是没有弄清dependency的作用， webpack5里自带url-loader
             // {
             //     test: /\.(png|jpg|gif)$/i,
             //     dependency: { not: ['url'] },
