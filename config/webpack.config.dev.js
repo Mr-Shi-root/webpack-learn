@@ -49,6 +49,13 @@ module.exports = {
             //     ],
                 
             // },
+
+            // https://blog.csdn.net/MRlaochen/article/details/122158255
+            // asset，asset/resource
+            // asset/resource：发送一个单独的文件并导出URL，替代file-loader
+            // asset/inline：导出一个资源的data URI，替代url-loader
+            // asset/source：导出资源的源代码，之前通过使用raw-loader实现
+            // asset：介于asset/resource和asset/inline之间，在导出一个资源data URI和发送一个单独的文件并导出URL之间做选择，之前通过url-loader+limit属性实现
             {
                 test: /\.(png|jpe?g|gif|webp|svg)$/,
                 type: "asset",
@@ -103,6 +110,8 @@ module.exports = {
         }),
         new VueLoaderPlugin(),
     ],
+    // 开发服务器是不会 输出打包资源，是在内存中编译打包的
+    // 问题待解决：webpack-dev-server跑起来开发项目时，硬盘体积越来越小，是为神马
     devServer: {
         host: 'localhost',
         port: '3000',
