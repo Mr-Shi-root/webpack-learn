@@ -3,7 +3,8 @@ const path = require('path');
 // const HtmlWebpackPlugin = require('html-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 //const {VueLoaderPlugin} = require('vue-loader'); // vue-loader新版本引入方法
-const Components = require("../components.json")
+const Components = require("../components.json");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = {
     // 入口
     entry: Components,
@@ -26,11 +27,11 @@ module.exports = {
         rules:[
             {
                 test: /\.css$/,
-                use: ['style-loader', 'css-loader']
+                use: [MiniCssExtractPlugin.loader, 'css-loader']
             },
             { 
                 test: /\.less$/,
-                use: ['style-loader', 'css-loader', 'less-loader']
+                use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader']
             },
             // sass 需要安装 sass sass-loader两个插件
 
@@ -94,7 +95,8 @@ module.exports = {
         //     // 新的模版特点：1.和原模版结构一致 2.自动引入打包后所需要的资源
         //     template: path.resolve(__dirname, '../public/index.html')
         // })
-        new VueLoaderPlugin()
+        new VueLoaderPlugin(),
+        new MiniCssExtractPlugin()
     ],
     // 生产模式不需要devServer
     // devServer: {
