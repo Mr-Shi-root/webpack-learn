@@ -96,7 +96,9 @@ module.exports = {
         //     template: path.resolve(__dirname, '../public/index.html')
         // })
         new VueLoaderPlugin(),
-        new MiniCssExtractPlugin()
+        new MiniCssExtractPlugin({
+            filename: 'static/css/main.css'
+        })
     ],
     // 生产模式不需要devServer
     // devServer: {
