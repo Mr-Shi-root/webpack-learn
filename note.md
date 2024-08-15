@@ -59,3 +59,9 @@
         '> 1%', // 覆盖市面99%的浏览器
         'not dead' // 不要已经死了的浏览器
     ]
+
+27.css压缩-变成一行
+    使用插件 CssMinimizerWebpackPlugin
+    npm install css-minimizer-webpack-plugin --save-dev
+    require引入
+    new CssMinixxx（）

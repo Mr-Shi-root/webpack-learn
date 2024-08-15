@@ -5,7 +5,7 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 //const {VueLoaderPlugin} = require('vue-loader'); // vue-loader新版本引入方法
 const Components = require("../components.json");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-
+const CssMinimizerWebpackPlugin = require('css-minimizer-webpack-plugin')
 function getStyleLoader(pre) {
     return [
         MiniCssExtractPlugin.loader, 'css-loader', {
@@ -119,7 +119,8 @@ module.exports = {
         new VueLoaderPlugin(),
         new MiniCssExtractPlugin({
             filename: 'static/css/main.css'
-        })
+        }),
+        new CssMinimizerWebpackPlugin()
     ],
     // 生产模式不需要devServer
     // devServer: {
