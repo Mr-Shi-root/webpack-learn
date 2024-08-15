@@ -184,14 +184,42 @@
     例子：import { add, mul } from 'math.js'
     只会打包math.js里export的add和mul两个函数，其余export的函数，不会进行打包
 
+    面试问到，可以通过组件库的打包方式入手，提升性能，自研的组件库，通过common和es6两种方式进行打包，引入可以供选择，建议使用es6，因为可以通过treeshaking来进行减少体积，从而提升性能
 
 
+36.@babel/pluign-transform-runtime 减少代码体积
+    1."useBuiltIns": "usage",
+    babel 使用 polyfill 来处理 api，即一些js的内置函数，如includes，filter，map等等，但是这些函数，可能通过智能预设直接编译，编译后的结果如果在未识别的系统上出现，就会报错，所以就有一个 polyfill 去处理这个api，里面有个core-js库，这个库在使用的时候，会把所有方法都打包进去，但是可能我们只用到某个函数，这个时候就要配置babel的这个属性
+    // 解决方法：把"useBuiltIns"变成"usage",babel 就可以按需加载 polyfill，并且不需要手动引入 @babel/polyfill
+    {
+        "presets": [
+            [
+            "@babel/preset-env",
+            {
+                "useBuiltIns": "usage",
+                "debug": true
+            }
+            ]
+        ]
+    }
+    2.https://juejin.cn/post/7033383643976630302
+    简单来说，是babel会为每个文件提供一些辅助代码，100个文件，就提供100分，这个插件的作用就是禁止注入，而是在这里引入，从而减少体积
 
+    深入来说：看文档
+    
 
+37.按需引入 /* webpackChunkName： show */ 性能优化
+    其中，show就是webpack中output的chunkName,参数值为[name].js，就会输出一个js文件
+    当在文件中由路由，或者事件等操作，需要加载时，再去进行请求加载
 
+38.图片压缩 img-minmizer-webpack-plugin
+    有损压缩（不推荐）： 压缩后图片体积更小一点，但不完整
+        npm install imagemin-gifsicle imagemin-mozjpeg imagemin-pngquant imagemin-svgo -D
+    无损压缩（推荐）：压缩后图片体积稍大一点，但保持了完整
+        npm install --ignore-scripts imagemin-gifsicle imagemin-jpegtran imagemin-optipng imagemin-svgo -D
 
-
-
+    安装完会有一个报错，win下是jpegtran-bin报错，linux是optipng-bin报错
+    解决方法，重新下载这两个包
 
 
 

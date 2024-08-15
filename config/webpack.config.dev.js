@@ -4,6 +4,7 @@ const ESLintPlugin = require('eslint-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const loader = require("css-loader");
+const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin"); //本地图片压缩
 // 自带的
 const TerserWebpackPlugin = require('terser-webpack-plugin')
 
@@ -145,7 +146,34 @@ module.exports = {
         new VueLoaderPlugin(),
         new TerserWebpackPlugin({
             parallel: threads, //开启多进程和设置进程数量
-        })
+        }),
+        new ImageMinimizerPlugin({
+            minimizer: {
+              implementation: ImageMinimizerPlugin.imageminGenerate,
+              options: {
+                plugins: [
+                  ["gifsicle", { interlaced: true }],
+                  ["jpegtran", { progressive: true }],
+                  ["optipng", { optimizationLevel: 5 }],
+                  [
+                    "svgo",
+                    {
+                      plugins: [
+                        "preset-default",
+                        "prefixIds",
+                        {
+                          name: "sortAttrs",
+                          params: {
+                            xmlnsOrder: "alphabetical",
+                          },
+                        },
+                      ],
+                    },
+                  ],
+                ],
+              },
+            },
+          }),
     ],
     // 开发服务器是不会 输出打包资源，是在内存中编译打包的
     // 问题待解决：webpack-dev-server跑起来开发项目时，硬盘体积越来越小，是为神马

@@ -9,6 +9,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerWebpackPlugin = require('css-minimizer-webpack-plugin')
 // 自带的
 const TerserWebpackPlugin = require('terser-webpack-plugin')
+const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin"); //本地图片压缩
 
 const threads = os.cpus().length
 console.log('------', threads)
@@ -154,7 +155,34 @@ module.exports = {
             // 压缩js
             new TerserWebpackPlugin({
                 parallel: threads, //开启多进程和设置进程数量
-            })
+            }),
+            new ImageMinimizerPlugin({
+                minimizer: {
+                  implementation: ImageMinimizerPlugin.imageminGenerate,
+                  options: {
+                    plugins: [
+                      ["gifsicle", { interlaced: true }],
+                      ["jpegtran", { progressive: true }],
+                      ["optipng", { optimizationLevel: 5 }],
+                      [
+                        "svgo",
+                        {
+                          plugins: [
+                            "preset-default",
+                            "prefixIds",
+                            {
+                              name: "sortAttrs",
+                              params: {
+                                xmlnsOrder: "alphabetical",
+                              },
+                            },
+                          ],
+                        },
+                      ],
+                    ],
+                  },
+                },
+              }),
         ],
     },
     // 生产模式不需要devServer
