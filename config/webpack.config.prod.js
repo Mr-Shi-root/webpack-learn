@@ -1,3 +1,4 @@
+const os = require('os')
 const path = require('path');
 // const ESLintPlugin = require('eslint-webpack-plugin');
 // const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -6,6 +7,12 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 const Components = require("../components.json");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerWebpackPlugin = require('css-minimizer-webpack-plugin')
+// 自带的
+const TerserWebpackPlugin = require('terser-webpack-plugin')
+
+const threads = os.cpus().length
+console.log('------', threads)
+
 function getStyleLoader(pre) {
     return [
         MiniCssExtractPlugin.loader, 'css-loader', {
@@ -101,7 +108,21 @@ module.exports = {
             {
                 test: /\.js$/,
                 exclude: /node_modules/, // 排除
-                loader: 'babel-loader'
+                use: [
+                    {
+                        loader: 'thread-loader',
+                        options: {
+                            works: threads, // 开启进程数量
+                        }
+                    },
+                    {
+                        loader: 'babel-loader',
+                        options: {
+                            cacheDirectory: true, // 开启babel缓存
+                            cacheCompression: false, // 关闭缓存文件压缩
+                        },
+                    }
+                ]
             },
         ]
     }, 
@@ -120,7 +141,10 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: 'static/css/main.css'
         }),
-        new CssMinimizerWebpackPlugin()
+        new CssMinimizerWebpackPlugin(),
+        new TerserWebpackPlugin({
+            parallel: threads, //开启多进程和设置进程数量
+        })
     ],
     // 生产模式不需要devServer
     // devServer: {

@@ -1,7 +1,13 @@
+const os = require("os")
 const path = require('path');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const loader = require("css-loader");
+// 自带的
+const TerserWebpackPlugin = require('terser-webpack-plugin')
+
+const threads = os.cpus().length; // cpu核数
 
 module.exports = {
     // 入口
@@ -98,11 +104,22 @@ module.exports = {
                     {
                         test: /\.js$/,
                         exclude: /node_modules/, // 排除
-                        loader: 'babel-loader',
-                        options: {
-                            cacheDirectory: true, // 开启babel缓存
-                            cacheCompression: false, // 关闭缓存文件压缩
-                        }
+                        // 因为要处理多个loader，所以要用use
+                        use: [
+                            {
+                                loader: 'thread-loader', // 开启多进程
+                                options: {
+                                    works: threads, // 进程数量
+                                }
+                            },
+                            {
+                                loader: 'babel-loader',
+                                options: {
+                                    cacheDirectory: true, // 开启babel缓存
+                                    cacheCompression: false, // 关闭缓存文件压缩
+                                },
+                            }
+                        ]
                     }
                 ]
             }
@@ -118,6 +135,7 @@ module.exports = {
             cacheLocation: path.resolve(__dirname, 
                 "../node_modules/.cache/eslintcache"
             ), // 缓存路径(注：原cache缓存js文件路径，是node_modules下的.cache文件下)
+            threads, // 开启多进程的进程数量
         }),
         new HtmlWebpackPlugin({
             // 模版：以public/index.html为模版创建新的html文件
@@ -125,6 +143,9 @@ module.exports = {
             template: path.resolve(__dirname, '../src/pages/index/index.html')
         }),
         new VueLoaderPlugin(),
+        new TerserWebpackPlugin({
+            parallel: threads, //开启多进程和设置进程数量
+        })
     ],
     // 开发服务器是不会 输出打包资源，是在内存中编译打包的
     // 问题待解决：webpack-dev-server跑起来开发项目时，硬盘体积越来越小，是为神马
