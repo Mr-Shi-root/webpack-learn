@@ -145,3 +145,23 @@
         3）使用
             1.引入os
             const os = require("os")
+            2.获取cpu内核数量
+            const threads = os.cpus().length
+            3.注册terserPlugin
+            const TerserWebpackPlugin = require('terser-webpack-plugin')
+            plugin: {
+                // 忽略其他
+                new TerserWebpackPlugin({
+                    parallel: threads, //开启多进程和设置进程数量
+                })
+            }
+            4.由于处理js需要用到babel-loader，多个loader同时使用，需要用use数组包裹
+            use: [
+                {
+                    loader: 'thread-loader',
+                    options: {
+                        works: threads, // 开启进程数量
+                    }
+                },
+                {}, // 其他loader，例如babel-loader
+            ]
