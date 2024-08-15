@@ -146,6 +146,17 @@ module.exports = {
             parallel: threads, //开启多进程和设置进程数量
         })
     ],
+    optimization: {
+        // 压缩的操作
+        minimizer: [
+            // 压缩css
+            new CssMinimizerWebpackPlugin(),
+            // 压缩js
+            new TerserWebpackPlugin({
+                parallel: threads, //开启多进程和设置进程数量
+            })
+        ],
+    },
     // 生产模式不需要devServer
     // devServer: {
     //     host: 'localhost',

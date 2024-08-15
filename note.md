@@ -165,3 +165,31 @@
                 },
                 {}, // 其他loader，例如babel-loader
             ]
+    webpack5中，压缩的一系列操作，一般放在optimization.minimizer中
+    （目前也可以放在plugin中，现在是w4向w5转移，二者都适用，但是未来webpack5也许会规范化，可能就只能放在minimizer中了）
+    optimization: {
+        // 压缩的操作
+        minimizer: [
+            // 压缩css
+            new CssMinimizerWebpackPlugin(),
+            // 压缩js
+            new TerserWebpackPlugin({
+                parallel: threads, //开启多进程和设置进程数量
+            })
+        ],
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
