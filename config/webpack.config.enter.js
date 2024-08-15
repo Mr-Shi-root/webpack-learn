@@ -106,5 +106,6 @@ module.exports = {
     //     open: true
     // },
     // 生产环境
-    mode: 'production'
+    mode: 'production',
+    devtool: 'source-map'
 }

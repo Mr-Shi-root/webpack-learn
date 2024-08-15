@@ -60,8 +60,26 @@
         'not dead' // 不要已经死了的浏览器
     ]
 
-27.css压缩-变成一行
+28.css压缩-变成一行
     使用插件 CssMinimizerWebpackPlugin
     npm install css-minimizer-webpack-plugin --save-dev
     require引入
     new CssMinixxx（）
+
+29.sourcemap
+    定义：编译后的代码与源代码进行映射
+    开发模式：cheap-module-source-map
+        优点：打包编译速度快，只包含行映射
+        缺点：没有列映射
+        webpack.config.js：{
+            mode: 'develepment',
+            devtool: 'cheap-module-source-map'
+        }
+    
+    生产模式：source-map
+        优点：包含行/列映射
+        缺点：打包编译速度更慢
+         webpack.config.js：{
+            mode: 'production',
+            devtool: 'source-map'
+        }

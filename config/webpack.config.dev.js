@@ -118,5 +118,6 @@ module.exports = {
         open: true
     },
     // 开发环境
-    mode: 'development'
+    mode: 'development',
+    devtool: 'cheap-module-source-map'
 }

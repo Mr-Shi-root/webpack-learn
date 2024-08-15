@@ -130,4 +130,5 @@ module.exports = {
     // },
     // 生产环境
     mode: 'production',
+    devtool: 'source-map'
 }
