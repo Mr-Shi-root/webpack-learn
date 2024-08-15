@@ -179,6 +179,10 @@
         ],
     },
 
+35.TreeShaking 
+    webpack4,5都默认开启，当通过esmodule引入一个方法时，其余未使用的方法，不会进行打包
+    例子：import { add, mul } from 'math.js'
+    只会打包math.js里export的add和mul两个函数，其余export的函数，不会进行打包
 
 
 
