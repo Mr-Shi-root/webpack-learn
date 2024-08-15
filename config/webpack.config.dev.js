@@ -2,6 +2,7 @@ const path = require('path');
 const ESLintPlugin = require('eslint-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
+
 module.exports = {
     // 入口
     entry: './src/pages/index/index.js',
@@ -20,6 +21,12 @@ module.exports = {
     // 加载器
     module: {
         rules: [
+            {
+                test: /\.vue$/,
+                use: [
+                    'vue-loader'
+                ]
+            },
             {
                 oneOf: [
                     {
@@ -61,6 +68,8 @@ module.exports = {
                     {
                         test: /\.(png|jpe?g|gif|webp|svg)$/,
                         type: "asset",
+                        // include: path.resolve(__dirname, '../src'),
+                        exclude: /node_modules/, 
                         parser: {
                             dataUrlCondition: {
                                 maxSize: 14 * 1024
@@ -79,12 +88,6 @@ module.exports = {
                             // [hash:10] hash值取前10位
                             filename: "static/media/[hash][ext][query]"
                         }
-                    },
-                    {
-                        test: /\.vue$/,
-                        use: [
-                            'vue-loader'
-                        ]
                     },
                     // 专门处理html文件的img图片，（负责引入img，从而能被url-loader处理）
                     // 问题：为啥非要在vue-loader下面，。先执行html-loader
@@ -105,7 +108,8 @@ module.exports = {
     plugins: [
         new ESLintPlugin({
             // 检测哪个目录下的文件
-            context: path.resolve(__dirname, '../src')
+            context: path.resolve(__dirname, '../src'),
+            exclude: "node_modules"
         }),
         new HtmlWebpackPlugin({
             // 模版：以public/index.html为模版创建新的html文件

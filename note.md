@@ -107,7 +107,9 @@
         }
     ]
 
-
+32.include 和 exclude 的用法
+    exclude：排除xxx下的文件，其他文件都处理
+    include：只处理xxx下的文件，其他都不处理
     
 
 
