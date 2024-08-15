@@ -83,3 +83,21 @@
             mode: 'production',
             devtool: 'source-map'
         }
+
+30.webpack提升打包构建速度
+    HotModuleReplacement
+    webpack更新是点击刷新键，对于大项目来说，改动点很小，重新刷新，浪费时间，性能
+
+    热更新，HMR，可以指定文件进行热更新，监听文件，当发生改变时，文件进行部分更新，不会全局更新
+    vue react 中有自己的loader专门解决这个问题 vue-loader react-hot-loader
+    如果是一个js内嵌另一个，当另一个发生变化时，不会进行热更新
+
+
+    
+
+
+
+
+
+
+
