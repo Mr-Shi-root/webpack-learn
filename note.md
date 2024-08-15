@@ -111,9 +111,28 @@
     exclude：排除xxx下的文件，其他文件都处理
     include：只处理xxx下的文件，其他都不处理
     
+33.cache缓存
+    对babel解析的js文件进行缓存，同时关闭对缓存文件的压缩
+    压缩需要时间成本，上线后无需上传使用，所以无需进行压缩
+    {
+        test: /\.js$/,
+        exclude: /node_modules/, // 排除
+        loader: 'babel-loader',
+        options: {
+            cacheDirectory: true, // 开启babel缓存
+            cacheCompression: false, // 关闭缓存文件压缩
+        } // cache缓存js路径，是node_modules下的.cache文件下
+    }
 
-
-
+    new ESLintPlugin({
+        // 检测哪个目录下的文件
+        context: path.resolve(__dirname, '../src'),
+        exclude: "node_modules",
+        cache: true,  // 开启缓存
+        cacheLocation: path.resolve(__dirname, 
+            "../node_modules/.cache/eslintcache"
+        ), // 缓存路径(注：原cache缓存js文件路径，是node_modules下的.cache文件下)
+    }),
 
 
 
