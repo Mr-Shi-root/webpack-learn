@@ -5,6 +5,23 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 //const {VueLoaderPlugin} = require('vue-loader'); // vue-loader新版本引入方法
 const Components = require("../components.json");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
+function getStyleLoader(pre) {
+    return [
+        MiniCssExtractPlugin.loader, 'css-loader', {
+            loader: 'postcss-loader',
+            options: {
+                postcssOptions: {
+                    plugin: [
+                        'postcss-preset-env', // 能解决大多数样式兼容问题
+                    ]
+                }
+            }
+        },
+        pre,
+    ].filter(Boolean)
+}
+
 module.exports = {
     // 入口
     entry: Components,
@@ -27,30 +44,16 @@ module.exports = {
         rules:[
             {
                 test: /\.css$/,
-                use: [MiniCssExtractPlugin.loader, 'css-loader', {
-                    loader: 'postcss-loader',
-                    options: {
-                        postcssOptions: {
-                            plugin: [
-                                'postcss-preset-env', // 能解决大多数样式兼容问题
-                            ]
-                        }
-                    }
-                }]
+                use: getStyleLoader()
             },
             { 
                 test: /\.less$/,
-                use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader',{
-                    loader: 'postcss-loader',
-                    options: {
-                        postcssOptions: {
-                            plugin: [
-                                'postcss-preset-env', // 能解决大多数样式兼容问题
-                            ]
-                        }
-                    }
-                }]
+                use: getStyleLoader(
+                    'less-loader'
+                )
             },
+            // 后续sass-loader stule等等，也可以用函数
+
             // sass 需要安装 sass sass-loader两个插件
 
             // styl 需要安装 style-loader 插件
