@@ -19,81 +19,85 @@ module.exports = {
     },
     // 加载器
     module: {
-        rules:[
+        rules: [
             {
-                test: /\.css$/,
-                // use数组中loader执行顺序，从右到左，从下到上
-                // 创建style标签，将js的样式资源插入进行，添加到head中生效
-                // 将css资源编译成commonjs模块加载到js中，
-                use: ['style-loader', 'css-loader']
-            },
-            { 
-                test: /\.less$/,
-                use: ['style-loader', 'css-loader', 'less-loader']
-            },
-            // sass 需要安装 sass sass-loader两个插件
-
-            // style 需要安装 style-loader 插件
-
-            // 还是没有弄清dependency的作用， webpack5里自带url-loader
-            // {
-            //     test: /\.(png|jpg|gif)$/i,
-            //     dependency: { not: ['url'] },
-            //     use: [
-            //         {
-            //             loader: 'url-loader',
-            //             options: {
-            //                 limit: 20000,
-            //             },
-            //         },
-            //     ],
-                
-            // },
-
-            // https://blog.csdn.net/MRlaochen/article/details/122158255
-            // asset，asset/resource
-            // asset/resource：发送一个单独的文件并导出URL，替代file-loader
-            // asset/inline：导出一个资源的data URI，替代url-loader
-            // asset/source：导出资源的源代码，之前通过使用raw-loader实现
-            // asset：介于asset/resource和asset/inline之间，在导出一个资源data URI和发送一个单独的文件并导出URL之间做选择，之前通过url-loader+limit属性实现
-            {
-                test: /\.(png|jpe?g|gif|webp|svg)$/,
-                type: "asset",
-                parser: {
-                    dataUrlCondition: {
-                        maxSize: 14 * 1024
+                oneOf: [
+                    {
+                        test: /\.css$/,
+                        // use数组中loader执行顺序，从右到左，从下到上
+                        // 创建style标签，将js的样式资源插入进行，添加到head中生效
+                        // 将css资源编译成commonjs模块加载到js中，
+                        use: ['style-loader', 'css-loader']
+                    },
+                    { 
+                        test: /\.less$/,
+                        use: ['style-loader', 'css-loader', 'less-loader']
+                    },
+                    // sass 需要安装 sass sass-loader两个插件
+        
+                    // style 需要安装 style-loader 插件
+        
+                    // 还是没有弄清dependency的作用， webpack5里自带url-loader
+                    // {
+                    //     test: /\.(png|jpg|gif)$/i,
+                    //     dependency: { not: ['url'] },
+                    //     use: [
+                    //         {
+                    //             loader: 'url-loader',
+                    //             options: {
+                    //                 limit: 20000,
+                    //             },
+                    //         },
+                    //     ],
+                        
+                    // },
+        
+                    // https://blog.csdn.net/MRlaochen/article/details/122158255
+                    // asset，asset/resource
+                    // asset/resource：发送一个单独的文件并导出URL，替代file-loader
+                    // asset/inline：导出一个资源的data URI，替代url-loader
+                    // asset/source：导出资源的源代码，之前通过使用raw-loader实现
+                    // asset：介于asset/resource和asset/inline之间，在导出一个资源data URI和发送一个单独的文件并导出URL之间做选择，之前通过url-loader+limit属性实现
+                    {
+                        test: /\.(png|jpe?g|gif|webp|svg)$/,
+                        type: "asset",
+                        parser: {
+                            dataUrlCondition: {
+                                maxSize: 14 * 1024
+                            }
+                        },
+                        generator: {
+                            // [hash:10] hash值取前10位
+                            filename: "static/image/[hash][ext][query]"
+                        }
+        
+                    },
+                    {
+                        test: /\.(ttf|woff2?)$/,
+                        type: "asset/resource",
+                        generator: {
+                            // [hash:10] hash值取前10位
+                            filename: "static/media/[hash][ext][query]"
+                        }
+                    },
+                    {
+                        test: /\.vue$/,
+                        use: [
+                            'vue-loader'
+                        ]
+                    },
+                    // 专门处理html文件的img图片，（负责引入img，从而能被url-loader处理）
+                    // 问题：为啥非要在vue-loader下面，。先执行html-loader
+                    {
+                        test: /\.html$/,
+                        loader: 'html-loader'
+                    },
+                    {
+                        test: /\.js$/,
+                        exclude: /node_modules/, // 排除
+                        loader: 'babel-loader'
                     }
-                },
-                generator: {
-                    // [hash:10] hash值取前10位
-                    filename: "static/image/[hash][ext][query]"
-                }
-
-            },
-            {
-                test: /\.(ttf|woff2?)$/,
-                type: "asset/resource",
-                generator: {
-                    // [hash:10] hash值取前10位
-                    filename: "static/media/[hash][ext][query]"
-                }
-            },
-            {
-                test: /\.vue$/,
-                use: [
-                    'vue-loader'
                 ]
-            },
-            // 专门处理html文件的img图片，（负责引入img，从而能被url-loader处理）
-            // 问题：为啥非要在vue-loader下面，。先执行html-loader
-            {
-                test: /\.html$/,
-                loader: 'html-loader'
-            },
-            {
-                test: /\.js$/,
-                exclude: /node_modules/, // 排除
-                loader: 'babel-loader'
             }
         ]
     }, 

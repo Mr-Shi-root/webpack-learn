@@ -92,6 +92,21 @@
     vue react 中有自己的loader专门解决这个问题 vue-loader react-hot-loader
     如果是一个js内嵌另一个，当另一个发生变化时，不会进行热更新
 
+31.oneof的用法
+    当匹配loader过程中，被其中一个loader运行后，不继续被下面的loader继续识别
+    开发模式，生产模式都可使用
+    rules: [
+        {},{},{}
+    ]
+    变更为
+    rules: [
+        {
+            oneOf: [
+                {},{},{}
+            ]
+        }
+    ]
+
 
     
 
