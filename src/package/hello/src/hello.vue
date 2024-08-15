@@ -35,6 +35,7 @@ export default {
 <style lang="less" scoped>
 .hello {
     .world {
+        display: flex;
         color: red;
         font-size: 20px;
     }

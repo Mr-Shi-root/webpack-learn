@@ -27,11 +27,29 @@ module.exports = {
         rules:[
             {
                 test: /\.css$/,
-                use: [MiniCssExtractPlugin.loader, 'css-loader']
+                use: [MiniCssExtractPlugin.loader, 'css-loader', {
+                    loader: 'postcss-loader',
+                    options: {
+                        postcssOptions: {
+                            plugin: [
+                                'postcss-preset-env', // 能解决大多数样式兼容问题
+                            ]
+                        }
+                    }
+                }]
             },
             { 
                 test: /\.less$/,
-                use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader']
+                use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader',{
+                    loader: 'postcss-loader',
+                    options: {
+                        postcssOptions: {
+                            plugin: [
+                                'postcss-preset-env', // 能解决大多数样式兼容问题
+                            ]
+                        }
+                    }
+                }]
             },
             // sass 需要安装 sass sass-loader两个插件
 
@@ -107,5 +125,5 @@ module.exports = {
     //     open: true
     // },
     // 生产环境
-    mode: 'production'
+    mode: 'production',
 }

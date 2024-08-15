@@ -30,11 +30,19 @@
     "eslint-webpack-plugin": "^3.2.0",
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.9.0",
+    "postcss": "^8.4.41",
+    "postcss-loader": "^8.1.1",
+    "postcss-preset-env": "^10.0.1",
     "rimraf": "^3.0.2",
     "vue": "^2.6.0",
     "vue-loader": "^15.7.0",
     "vue-template-compiler": "^2.6.10",
     "webpack": "^5.74.0",
     "webpack-dev-server": "^4.11.1"
-  }
+  },
+  "overrideBrowserslist": [
+    "Android >= 4",
+    "iOS >= 5",
+    "ie >= 8"
+  ]
 }

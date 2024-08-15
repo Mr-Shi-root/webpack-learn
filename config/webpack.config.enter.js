@@ -10,7 +10,7 @@ module.exports = {
     // 输出
     output: {
         // 所有文件的输出路径
-        path: path.resolve(__dirname, '../dist'),
+        path: path.resolve(__dirname, '../umd'),
         // 入口文件打包输出文件名
         filename: 'static/js/main.js',
         chunkFilename: '[id].js',
