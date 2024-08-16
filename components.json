@@ -1,3 +1,4 @@
 {
-    "WdHello": "./src/package/hello/index.js"
+    "WdHello": "./src/package/hello/index.js",
+    "WdImgUpload": "./src/package/imgUpload/index.js"
 }

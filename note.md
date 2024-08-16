@@ -221,6 +221,64 @@
     安装完会有一个报错，win下是jpegtran-bin报错，linux是optipng-bin报错
     解决方法，重新下载这两个包
 
+------
+
+39.CodeSplit 优化代码运行性能
+    entry由字符串变成对象，里面的key是chunk的name，值是入口文件
+    output中输出打包名字"[name].js"
+
+    当 index和index1里面都 引入a.js 和 jquery.js等时，打包后每一个bundle里都会有a和juery，使得体积变大，所以需要提炼出来，分包满足以下配置，就会单独打包
+    例如：引用次数超过2次，超过5万kb一定打包等等
+
+    如果不配置 miniChunks ，会把所有的modules都打包到一个里面
+
+    拆分第三方库和业务代码 vendors
+
+    拆分指定文件： locallib（diy）
+
+    分包需要配置
+    module.exports = {
+        //...
+        optimization: {
+            // 分包的默认配置
+            splitChunks: {
+                chunks: 'all', 
+                // 以下是默认值
+                minSize: 20000, // 分割代码最小的大小
+                minRemainingSize: 0, // 类似于miniSize，最后确保提取的文件大小不能为0
+                minChunks: 1, // 至少被引用的次数，满足条件才会代码分割
+                maxAsyncRequests: 30, // 按需加载时并行加载的文件的最大数量（数量多，请求会变多）
+                maxInitialRequests: 30, // 入口js文件最大并行请求数量
+                enforceSizeThreshold: 50000, // 超过50000kb一定会单独打包（此时会忽略minRemainingSize，maxAsyncRequests， maxInitialRequests）也就是总数，可能超过30
+                cacheGroups: { // 组 那些模块要打包到一个组
+                    <!-- defaultVendors: { // 组名
+                        test: /[\\/]node_modules[\\/]/, // 需要打包到一起的模块
+                        priority: -10, // 权重（越大越高）
+                        reuseExistingChunk: true, // 如果当前 chunk 包含已从主 bundle 中拆分出的模块，则它将被重用，而不是生成新的模块
+                    }, -->
+                    default: { // 其他没有写的配置会使用上面的默认值
+                        minChunks: 2, // 这里的minChunks圈中更大
+                        priority: -20,
+                        reuseExistingChunk: true,
+                    },
+                    vendors: { //拆分第三方库（通过npm|yarn安装的库）
+                        test: /[\\/]node_modules[\\/]/,
+                        name: 'vendor',
+                        chunks: 'initial',
+                        priority: -10
+                    },
+                    locallib: { //拆分指定文件
+                        test: /(src\/locallib\.js)$/,
+                        name: 'locallib',
+                        chunks: 'initial',
+                        priority: -9
+                    }
+                },
+            },
+        },
+    };
+
+
 
 
 
