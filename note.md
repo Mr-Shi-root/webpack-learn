@@ -208,9 +208,10 @@
     深入来说：看文档
     
 
-37.按需引入 /* webpackChunkName： show */ 性能优化
-    其中，show就是webpack中output的chunkName,参数值为[name].js，就会输出一个js文件
-    当在文件中由路由，或者事件等操作，需要加载时，再去进行请求加载
+37.按需引入 /* webpackChunkName: "show" */ 性能优化
+    其中，show就相当于webpack中output的chunkName,参数值为[name].js，就会输出一个js文件
+    当在文件中由路由，或者事件等操作，需要加载时，再去进行请求加载，加载的文件就是show.js
+    动态引入，还需要在webpack.config.js里output里配置chunkFileName: "[name].js" 魔法命名才能生效
 
 38.图片压缩 img-minmizer-webpack-plugin
     有损压缩（不推荐）： 压缩后图片体积更小一点，但不完整
@@ -277,6 +278,46 @@
             },
         },
     };
+
+40.CodeSplit按需加载，性能优化
+    一些依赖在点击操作后才会加载，初始化时无需import加载
+    可以在使用时动态import
+    import('./src/xxx.js').then((res) => {
+
+    }).catch((err) => {
+
+    })
+
+41.eslint 不支持动态倒入语法，需要引入import的plugin
+    webpack.config.js
+    plugin: [
+        'import'
+    ]
+
+42.图片，字体等命名规则，可以提取复用
+    outPut里加assetModuleFilename: "static/media/[hash:10][ext][query]"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
